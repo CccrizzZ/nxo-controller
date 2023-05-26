@@ -16,6 +16,7 @@
     "@prisma/client": "^4.14.1",
     "@tsed/ajv": "^7.29.0",
     "@tsed/common": "^7.29.0",
+    "@tsed/passport": "^7.29.0",
     "@tsed/platform-express": "^7.29.0",
     "@tsed/swagger": "^7.29.0",
     "compression": "^1.7.4",
@@ -25,6 +26,8 @@
     "husky": "^8.0.3",
     "is-ci": "^3.0.1",
     "method-override": "^3.0.0",
+    "passport": "^0.6.0",
+    "passport-http": "^0.3.0",
     "supertest": "^6.3.3",
     "ts-node-dev": "^2.0.0",
     "tsconfig-paths": "^4.2.0"
@@ -33,6 +36,8 @@
     "@tsed/cli-plugin-eslint": "4.5.2",
     "@tsed/cli-plugin-jest": "4.5.2",
     "@types/jest": "^29.5.1",
+    "@types/passport": "^1.0.12",
+    "@types/passport-http": "^0.3.9",
     "@types/supertest": "^2.0.12",
     "barrelsby": "^2.8.0",
     "prisma": "^4.14.1",
@@ -43,5 +48,8 @@
     "convention": "default",
     "architecture": "default",
     "packageManager": "npm"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   }
 }

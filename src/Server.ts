@@ -7,6 +7,7 @@ import "@tsed/swagger";
 import { config } from "./config/index";
 import * as rest from "./controllers/rest/index";
 import * as users from "./controllers/users/index";
+import * as auth from "./controllers/auth/index";
 import * as pages from "./controllers/pages/index";
 
 @Configuration({
@@ -16,15 +17,14 @@ import * as pages from "./controllers/pages/index";
   httpsPort: false, // CHANGE
   disableComponentsScan: true,
   mount: {
-    "/users": [
-      ...Object.values(users)
-    ],
     "/rest": [
-      ...Object.values(rest)
+      ...Object.values(auth),
+      ...Object.values(rest),
+      ...Object.values(users),
     ],
     "/": [
       ...Object.values(pages)
-    ]
+    ],
   },
   swagger: [
     {
