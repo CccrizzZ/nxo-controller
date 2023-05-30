@@ -1,16 +1,5 @@
-import {
-  Default,
-  Enum,
-  Format,
-  Maximum,
-  MaxLength,
-  Minimum,
-  MinLength,
-  Pattern,
-  Required,
-  Description,
-  Ignore
-} from "@tsed/schema";
+import { MaxLength, MinLength, Required } from "@tsed/schema";
+import { PatientRecordModel } from "./PatientRecordModel";
 
 export class User {
   _id: string;
@@ -24,4 +13,6 @@ export class User {
   @MinLength(3)
   @MaxLength(50)
   pwd: string;
+
+  records?: PatientRecordModel[];
 }
