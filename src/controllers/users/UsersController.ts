@@ -1,14 +1,14 @@
-import { Get, Post } from "@tsed/schema";
+import { Get } from "@tsed/schema";
 import { Controller } from "@tsed/di";
 import { PathParams } from "@tsed/platform-params";
-import { PrismaClient } from '@prisma/client'
+// import { PrismaClient } from '@prisma/client'
 
-const prisma = new PrismaClient()
+// const prisma = new PrismaClient()
 
 interface User {
-  id: string
-  name: string,
-  pwd?: string
+  id: string;
+  name: string;
+  pwd?: string;
 }
 
 @Controller("/users")
@@ -27,10 +27,10 @@ export class UserController {
     };
   }
 
-  @Get("/:pwd/:uname")
-  async getUserByLogin(@PathParams("pwd") pwd: string, @PathParams("uname") uname: string): Promise<any> {
-    return {
-      name: "test"
-    };
-  }
+  // @Get("/:pwd/:uname")
+  // async getUserByLogin(@PathParams("pwd") pwd: string, @PathParams("uname") uname: string): Promise<any> {
+  //   return {
+  //     name: "test"
+  //   };
+  // }
 }
