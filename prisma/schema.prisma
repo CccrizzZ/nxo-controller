@@ -1,5 +1,10 @@
-generator client {
-  provider = "prisma-client-js"
+// generator client {
+//   provider = "prisma-client-js"
+// }
+
+generator tsed {
+  provider = "@tsed/prisma"
+  output   = "../prisma/generated/tsed"
 }
 
 datasource db {

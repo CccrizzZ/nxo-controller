@@ -3,9 +3,7 @@ import { Inject } from "@tsed/di";
 import { BodyParams } from "@tsed/platform-params";
 import { BeforeInstall, OnInstall, OnVerify, Protocol } from "@tsed/passport";
 import { IStrategyOptions, Strategy } from "passport-local";
-// import { PrismaClient } from '@prisma/client'
 import { UserService } from "../users/UserService";
-// const prisma = new PrismaClient()
 
 @Protocol<IStrategyOptions>({
   name: "login",

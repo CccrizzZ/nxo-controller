@@ -1,21 +1,20 @@
 import { User } from "../../models/UserModel";
 import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
 
 // @Injectable()
 export class UserService {
-  private readonly usersArr: User[] = [];
+  private readonly prisma: PrismaClient = new PrismaClient();
 
   create(user: User) {
-    this.usersArr.push(user);
+    console.log(user);
   }
 
-  findAll(): User[] {
-    return this.usersArr;
+  findAll(): void {
+    console.log("findAll");
   }
 
   async findOne(name: string, pwd: string): Promise<any> {
-    const user = await prisma.users.findFirst({
+    const user = await this.prisma.users.findFirst({
       where: {
         name: String(name),
         pwd: pwd
