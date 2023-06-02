@@ -15,7 +15,7 @@
   "dependencies": {
     "@prisma/client": "^4.15.0",
     "@tsed/ajv": "^7.29.0",
-    "@tsed/common": "^7.29.0",
+    "@tsed/common": "^7.29.1",
     "@tsed/passport": "^7.29.0",
     "@tsed/platform-express": "^7.29.0",
     "@tsed/prisma": "^7.29.1",

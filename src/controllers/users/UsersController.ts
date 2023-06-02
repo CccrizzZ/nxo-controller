@@ -1,36 +1,29 @@
-import { Get } from "@tsed/schema";
-import { Controller } from "@tsed/di";
-import { PathParams } from "@tsed/platform-params";
-// import { PrismaClient } from '@prisma/client'
-
-// const prisma = new PrismaClient()
-
-interface User {
-  id: string;
-  name: string;
-  pwd?: string;
-}
+import { Get, Post } from "@tsed/schema";
+import { Controller, Inject } from "@tsed/di";
+import { PathParams, BodyParams } from "@tsed/platform-params";
+import { Users } from "@prisma/client";
+import { UserService } from "./UserService";
 
 @Controller("/users")
 export class UserController {
+  @Inject()
+  protected userService: UserService;
+
   @Get("/")
-  async findAll(): Promise<string> {
-    return "This action returns all users";
+  async findAll(): Promise<Users[] | undefined> {
+    return this.userService.findAll();
   }
 
-  // verify user exist in database
+  // get user by id, throw error if not found
   @Get("/:id")
-  async getUserById(@PathParams("id") id: string): Promise<User> {
-    return {
-      id,
-      name: "test"
-    };
+  async getUserById(@PathParams("id") id: string): Promise<Users | undefined> {
+    return this.userService.findUserById(id);
   }
 
-  // @Get("/:pwd/:uname")
-  // async getUserByLogin(@PathParams("pwd") pwd: string, @PathParams("uname") uname: string): Promise<any> {
-  //   return {
-  //     name: "test"
-  //   };
-  // }
+  @Post("/create")
+  async createUser(@BodyParams() newUser: Users): Promise<Users | undefined> {
+    return this.userService.createUser(newUser);
+  }
+
+  // @Put("/update")
 }
