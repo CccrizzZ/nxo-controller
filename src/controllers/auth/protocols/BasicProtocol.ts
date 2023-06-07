@@ -2,9 +2,7 @@ import { Req } from "@tsed/common";
 import { Arg, OnInstall, OnVerify, Protocol } from "@tsed/passport";
 import { Strategy } from "passport";
 import { BasicStrategy } from "passport-http";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { PrismaClient, Users } from "@prisma/client";
 
 @Protocol({
   name: "basic",
@@ -15,9 +13,11 @@ const prisma = new PrismaClient();
   }
 })
 export class BasicProtocol implements OnVerify, OnInstall {
-  async $onVerify(@Req() request: Req, @Arg(0) username: string, @Arg(1) password: string) {
+  private prisma: PrismaClient = new PrismaClient();
+
+  async $onVerify(@Req() request: Req, @Arg(0) username: string, @Arg(1) password: string): Promise<boolean | Users> {
     // grab from database
-    const user = await prisma.users.findFirst({
+    const user = await this.prisma.users.findFirst({
       where: {
         name: username,
         pwd: password

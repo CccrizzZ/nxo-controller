@@ -10,18 +10,28 @@ datasource db {
 model Users {
   id      String          @id @default(auto()) @map("_id") @db.ObjectId
   name    String
+  email   String
   pwd     String
   records PatientRecord[]
 }
 
 model PatientRecord {
-  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
   name       String
   date       String
   category   String
   recordType String
   priority   String
   statusType String
-  owner      Users?  @relation(fields: [oid], references: [id])
-  oid        String? @db.ObjectId
+  owner      Users?   @relation(fields: [oid], references: [id])
+  oid        String?  @db.ObjectId
+  Patient    Patient? @relation(fields: [patientId], references: [id])
+  patientId  String?  @db.ObjectId
+}
+
+model Patient {
+  id      String          @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  pwd     String
+  records PatientRecord[]
 }

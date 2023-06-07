@@ -63,4 +63,20 @@ export class UserService {
 
     return newUser;
   }
+
+  async validateUser(uname: string, pwd: string): Promise<boolean> {
+    console.log("validating ........" + uname);
+    try {
+      const result = await this.prisma.users.findFirst({
+        where: {
+          name: uname,
+          pwd: pwd
+        }
+      });
+      return result?.name === uname && result.pwd === pwd;
+    } catch (error) {
+      throw new Error(`Authentication error, ${error}`);
+    }
+    return true;
+  }
 }

@@ -3,6 +3,7 @@ import { Controller, Inject } from "@tsed/di";
 import { PathParams, BodyParams } from "@tsed/platform-params";
 import { Users } from "@prisma/client";
 import { UserService } from "./UserService";
+import { Authenticate } from "@tsed/passport";
 
 @Controller("/users")
 export class UserController {
@@ -10,6 +11,7 @@ export class UserController {
   protected userService: UserService;
 
   @Get("/")
+  @Authenticate("jwt")
   async findAll(): Promise<Users[] | undefined> {
     return this.userService.findAll();
   }

@@ -3,11 +3,13 @@ import { Controller } from "@tsed/di";
 import { PathParams, BodyParams } from "@tsed/platform-params";
 // import { PrismaClient } from '@prisma/client'
 import { PatientRecordModel } from "src/models/PatientRecordModel";
+import { Authorize } from "@tsed/passport";
 // const prisma = new PrismaClient()
 
 @Controller("/record")
 export class PatientRecordsController {
   @Get("/")
+  @Authorize("jwt")
   async findAll(): Promise<string> {
     return "This action returns all records";
   }

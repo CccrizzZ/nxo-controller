@@ -14,8 +14,8 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import methodOverride from "method-override";
-import "./controllers/auth/LoginProtocol";
-import "./controllers/auth/BasicProtocol";
+import "./controllers/auth/protocols/BasicProtocol";
+import "./controllers/auth/protocols/JWTProtocol";
 
 @Configuration({
   passport: {

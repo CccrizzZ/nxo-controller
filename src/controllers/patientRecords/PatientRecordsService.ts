@@ -16,4 +16,10 @@ export class PatientRecordsService {
       }
     });
   }
+
+  async findRecordById(id: string): Promise<PatientRecordModel> {
+    console.log(id);
+
+    return new PatientRecordModel();
+  }
 }
