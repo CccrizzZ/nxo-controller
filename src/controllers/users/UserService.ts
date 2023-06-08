@@ -1,4 +1,5 @@
 import { PrismaClient, Users } from "@prisma/client";
+import { Md5 } from "ts-md5";
 
 export class UserService {
   private readonly prisma: PrismaClient = new PrismaClient();
@@ -17,7 +18,7 @@ export class UserService {
   async findOne(name: string, pwd: string): Promise<any> {
     const user = await this.prisma.users.findFirst({
       where: {
-        name: String(name),
+        name: name,
         pwd: pwd
       }
     });
@@ -46,12 +47,12 @@ export class UserService {
     return result === null ? undefined : result;
   }
 
-  async createUser(newUser: Users): Promise<Users | undefined> {
+  async registerUser(newUser: Users): Promise<Users | undefined> {
     try {
       await this.prisma.users.create({
         data: {
           name: newUser.name,
-          pwd: newUser.pwd,
+          pwd: Md5.hashStr(newUser.pwd),
           records: {}
         }
       });

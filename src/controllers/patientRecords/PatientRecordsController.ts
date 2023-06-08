@@ -1,4 +1,4 @@
-import { Get, Post, ContentType } from "@tsed/schema";
+import { Get, Post, Delete } from "@tsed/schema";
 import { Controller } from "@tsed/di";
 import { PathParams, BodyParams } from "@tsed/platform-params";
 // import { PrismaClient } from '@prisma/client'
@@ -23,10 +23,14 @@ export class PatientRecordsController {
   }
 
   @Post("/add")
-  @ContentType("json")
   async addNewRecord(@BodyParams("record") record: PatientRecordModel): Promise<any> {
     console.log("payload: ", record);
 
     return;
+  }
+
+  @Delete("/delete")
+  async deleteRecordById(@BodyParams("id") id: string): Promise<any> {
+    console.log(id);
   }
 }

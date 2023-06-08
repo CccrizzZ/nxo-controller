@@ -5,7 +5,6 @@ import "@tsed/platform-express"; // /!\ keep this import
 import "@tsed/ajv";
 import "@tsed/swagger";
 import { config } from "./config/index";
-import * as rest from "./controllers/rest/index";
 import * as users from "./controllers/users/index";
 import * as auth from "./controllers/auth/index";
 import * as pages from "./controllers/pages/index";
@@ -33,7 +32,7 @@ import "./controllers/auth/protocols/JWTProtocol";
   httpsPort: false, // CHANGE
   disableComponentsScan: true,
   mount: {
-    "/rest": [...Object.values(auth), ...Object.values(rest), ...Object.values(users), ...Object.values(pRecord)],
+    "/rest": [...Object.values(auth), ...Object.values(users), ...Object.values(pRecord)],
     "/": [...Object.values(pages)]
   },
   swagger: [

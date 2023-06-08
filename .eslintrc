@@ -4,15 +4,16 @@
     "prettier",
     "plugin:@typescript-eslint/recommended"
   ],
-  "plugins": ["@typescript-eslint"],
+  "plugins": [
+    "@typescript-eslint"
+  ],
   "parserOptions": {
     "ecmaVersion": 2018,
-    "sourceType": "module",
-    "project": "./tsconfig.json"
+    "sourceType": "module"
   },
   "env": {
-   "node": true,
-   "es6": true
+    "node": true,
+    "es6": true
   },
   "rules": {
     "@typescript-eslint/no-inferrable-types": 0,
