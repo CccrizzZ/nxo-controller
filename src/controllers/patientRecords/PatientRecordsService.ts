@@ -42,4 +42,21 @@ export class PatientRecordsService {
 
     return id;
   }
+
+  async getRecordOwnerId(id: string): Promise<string | undefined> {
+    const record = await this.prisma.patientRecord
+      .findFirst({
+        where: {
+          id: id
+        }
+      })
+      .catch((e) => {
+        throw e;
+      });
+
+    if (!record) {
+      return undefined;
+    }
+    return record.id;
+  }
 }

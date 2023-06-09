@@ -1,36 +1,25 @@
 import { PrismaClient, Users } from "@prisma/client";
-import { Md5 } from "ts-md5";
+
+export type UserInfo = {
+  name: string | undefined;
+  email: string | undefined;
+};
 
 export class UserService {
   private readonly prisma: PrismaClient = new PrismaClient();
 
-  async findAll(): Promise<any> {
-    let usersArr: Users[];
-    try {
-      usersArr = await this.prisma.users.findMany();
-    } catch (error) {
-      throw new Error(`Cannot get all users, ${error}`);
-    }
+  // async findAll(): Promise<any> {
+  //   let usersArr: Users[];
+  //   try {
+  //     usersArr = await this.prisma.users.findMany();
+  //   } catch (error) {
+  //     throw new Error(`Cannot get all users, ${error}`);
+  //   }
 
-    return usersArr;
-  }
+  //   return usersArr;
+  // }
 
-  async findOne(name: string, pwd: string): Promise<any> {
-    const user = await this.prisma.users.findFirst({
-      where: {
-        name: name,
-        pwd: pwd
-      }
-    });
-
-    if (user) {
-      return user;
-    }
-
-    return "not found";
-  }
-
-  async findUserById(id: string): Promise<Users | undefined> {
+  async findUserById(id: string): Promise<UserInfo> {
     let result: Users | null;
     try {
       result = await this.prisma.users.findFirst({
@@ -38,13 +27,17 @@ export class UserService {
           id: id
         }
       });
-      await this.prisma.$disconnect();
     } catch (error) {
-      await this.prisma.$disconnect();
       throw new Error(`Cannot Find user with ID ${id}, ${error}`);
     }
+    await this.prisma.$disconnect();
 
-    return result === null ? undefined : result;
+    const info: UserInfo = {
+      name: result?.name,
+      email: result?.email
+    };
+
+    return info;
   }
 
   async registerUser(newUser: Users): Promise<Users | undefined> {
@@ -52,32 +45,81 @@ export class UserService {
       await this.prisma.users.create({
         data: {
           name: newUser.name,
-          pwd: Md5.hashStr(newUser.pwd),
+          email: newUser.email,
+          pwd: newUser.pwd,
           records: {}
         }
       });
-      await this.prisma.$disconnect();
     } catch (error) {
-      await this.prisma.$disconnect();
       throw new Error(`Cannot create user, ${error}`);
     }
-
+    await this.prisma.$disconnect();
     return newUser;
   }
 
-  async validateUser(uname: string, pwd: string): Promise<boolean> {
-    console.log("validating ........" + uname);
-    try {
-      const result = await this.prisma.users.findFirst({
+  async validateUser(email: string, pwd: string): Promise<boolean> {
+    const result = await this.prisma.users
+      .findFirst({
         where: {
-          name: uname,
+          email: email,
           pwd: pwd
         }
+      })
+      .catch((e) => {
+        throw e;
       });
-      return result?.name === uname && result.pwd === pwd;
-    } catch (error) {
-      throw new Error(`Authentication error, ${error}`);
+    await this.prisma.$disconnect();
+    if (!result) {
+      return false;
     }
+    return true;
+  }
+
+  async updateUserById(id: string, name?: string, pwd?: string, email?: string): Promise<Users | undefined> {
+    const user = await this.prisma.users
+      .findFirst({
+        where: {
+          id: id
+        }
+      })
+      .catch((e) => {
+        throw e;
+      });
+
+    if (!user) return undefined;
+
+    const result = await this.prisma.users
+      .update({
+        where: {
+          id: id
+        },
+        data: {
+          name: name ? name : user.name,
+          email: email ? email : user.email,
+          pwd: pwd ? pwd : user.pwd
+        }
+      })
+      .catch((e) => {
+        throw e;
+      });
+
+    if (!result) return undefined;
+    await this.prisma.$disconnect();
+    return result;
+  }
+
+  async deleteUserById(id: string): Promise<boolean> {
+    const res = await this.prisma.users
+      .delete({
+        where: {
+          id: id
+        }
+      })
+      .catch((e) => {
+        throw e;
+      });
+
+    if (!res.name) return false;
     return true;
   }
 }

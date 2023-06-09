@@ -19,10 +19,10 @@ model PatientRecord {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   name       String
   date       String
-  category   String
-  recordType String
-  priority   String
-  statusType String
+  category   String // 
+  recordType String // 'patientProfile' | 'labResult' | 'doctorsNote'
+  priority   String // 'emergency' | 'medium' | 'low'
+  statusType String // 'pending' | 'complete' | 'rejected' 
   owner      Users?   @relation(fields: [oid], references: [id])
   oid        String?  @db.ObjectId
   Patient    Patient? @relation(fields: [patientId], references: [id])
