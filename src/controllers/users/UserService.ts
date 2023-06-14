@@ -8,17 +8,7 @@ export type UserInfo = {
 export class UserService {
   private readonly prisma: PrismaClient = new PrismaClient();
 
-  // async findAll(): Promise<any> {
-  //   let usersArr: Users[];
-  //   try {
-  //     usersArr = await this.prisma.users.findMany();
-  //   } catch (error) {
-  //     throw new Error(`Cannot get all users, ${error}`);
-  //   }
-
-  //   return usersArr;
-  // }
-
+  // only return user info
   async findUserById(id: string): Promise<UserInfo> {
     let result: Users | null;
     try {

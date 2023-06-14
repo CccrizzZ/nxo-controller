@@ -18,20 +18,18 @@ model Users {
 model PatientRecord {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   name       String
-  date       String
-  category   String // 
+  date       DateTime @default(now())
+  category   String // "patientRequests" | "providerRequests" | "recordsReceived" | "yourRequests" ;
   recordType String // 'patientProfile' | 'labResult' | 'doctorsNote'
   priority   String // 'emergency' | 'medium' | 'low'
   statusType String // 'pending' | 'complete' | 'rejected' 
-  owner      Users?   @relation(fields: [oid], references: [id])
-  oid        String?  @db.ObjectId
-  Patient    Patient? @relation(fields: [patientId], references: [id])
   patientId  String?  @db.ObjectId
+  usersId    String?  @db.ObjectId
+  Users      Users?   @relation(fields: [usersId], references: [id])
 }
 
-model Patient {
-  id      String          @id @default(auto()) @map("_id") @db.ObjectId
-  name    String
-  pwd     String
-  records PatientRecord[]
+enum Role {
+  USER
+  PATIENT
+  ADMIN
 }

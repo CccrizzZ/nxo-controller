@@ -1,6 +1,6 @@
 import { Property, Nullable } from "@tsed/schema";
-import { User } from "./UserModel";
 
+export type categoryType = "patientRequests" | "providerRequests" | "recordsReceived" | "yourRequests" | undefined;
 export type recordType = "patientProfile" | "labResult" | "doctorsNote" | undefined;
 export type priorityType = "emergency" | "medium" | "low" | undefined;
 export type statusType = "pending" | "complete" | "rejected" | undefined;
@@ -26,9 +26,6 @@ export class PatientRecordModel {
 
   @Property()
   priority: priorityType;
-
-  @Nullable(User)
-  owner: User | null;
 
   @Nullable(String)
   oid: string | null;

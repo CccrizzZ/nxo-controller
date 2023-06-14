@@ -1,13 +1,18 @@
 import { Get, Post, Delete } from "@tsed/schema";
-import { Controller } from "@tsed/di";
+import { Controller, Inject } from "@tsed/di";
 import { PathParams, BodyParams } from "@tsed/platform-params";
 // import { PrismaClient } from '@prisma/client'
-import { PatientRecordModel } from "src/models/PatientRecordModel";
 import { Authorize } from "@tsed/passport";
+import { PatientRecordsService } from "./PatientRecordsService";
+import { PatientRecord } from "@prisma/client";
+
 // const prisma = new PrismaClient()
 
 @Controller("/record")
 export class PatientRecordsController {
+  @Inject()
+  protected patientRecordService: PatientRecordsService;
+
   @Get("/")
   @Authorize("jwt")
   async findAll(): Promise<string> {
@@ -15,22 +20,22 @@ export class PatientRecordsController {
   }
 
   @Get("/get/:id")
-  async getRecordById(@PathParams("id") id: string): Promise<any> {
-    return {
-      id,
-      name: "test"
-    };
+  async findRecordById(@PathParams("id") id: string): Promise<PatientRecord | undefined> {
+    return await this.patientRecordService.findRecordById(id);
   }
 
-  @Post("/add")
-  async addNewRecord(@BodyParams("record") record: PatientRecordModel): Promise<any> {
-    console.log("payload: ", record);
-
-    return;
+  @Post("/create")
+  async createRecord(@BodyParams("record") record: PatientRecord): Promise<string> {
+    return await this.patientRecordService.createRecord(record);
   }
 
-  @Delete("/delete")
-  async deleteRecordById(@BodyParams("id") id: string): Promise<any> {
-    console.log(id);
+  @Get("/owner/:id")
+  async findAllRecordsByOwnerId(@PathParams("id") id: string): Promise<PatientRecord[]> {
+    return this.patientRecordService.getAllRecordByOwner(id);
+  }
+
+  @Delete("/delete/:id")
+  async deleteRecordById(@BodyParams("id") id: string): Promise<string | undefined> {
+    return await this.patientRecordService.deleteRecordById(id);
   }
 }
