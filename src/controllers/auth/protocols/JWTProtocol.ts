@@ -3,7 +3,7 @@ import { Unauthorized } from "@tsed/exceptions";
 import { Arg, OnInstall, OnVerify, Protocol } from "@tsed/passport";
 import { ExtractJwt, Strategy, StrategyOptions } from "passport-jwt";
 import { UserService } from "src/controllers/users/UserService";
-import { Users } from "@prisma/client";
+import * as jwt from "jsonwebtoken";
 
 @Protocol<StrategyOptions>({
   name: "jwt",
@@ -18,16 +18,14 @@ import { Users } from "@prisma/client";
 export class JwtProtocol implements OnVerify, OnInstall {
   constructor(private userSevice: UserService) {}
 
-  async $onVerify(@Req() req: Req, @Arg(0) jwtPayload: any): Promise<Users | undefined> {
-    const user = this.userSevice.findUserById(String(jwtPayload.sub));
+  async $onVerify(@Req() req: Req, @Arg(0) jwtPayload: jwt.JwtPayload): Promise<string | undefined> {
+    const user = await this.userSevice.findUserById(String(jwtPayload.sub));
 
-    if (!user) {
+    if (!user || !user.name) {
       throw new Unauthorized("Wrong token");
     }
 
-    req.user = user;
-
-    return user;
+    return "Login Success!";
   }
 
   $onInstall(strategy: Strategy): void {

@@ -41,7 +41,7 @@ export class UserService {
         }
       });
     } catch (error) {
-      throw new Error(`Cannot create user, ${error}`);
+      throw new Error("Cannot create user");
     }
     await this.prisma.$disconnect();
     return newUser;
@@ -55,8 +55,8 @@ export class UserService {
           pwd: pwd
         }
       })
-      .catch((e) => {
-        throw e;
+      .catch(() => {
+        throw new Error("Cannot find user");
       });
     await this.prisma.$disconnect();
     if (!result) {
@@ -66,14 +66,15 @@ export class UserService {
   }
 
   async updateUserById(id: string, name?: string, pwd?: string, email?: string): Promise<Users | undefined> {
+    if (!name && !pwd && !email) throw new Error("Need more input");
     const user = await this.prisma.users
       .findFirst({
         where: {
           id: id
         }
       })
-      .catch((e) => {
-        throw e;
+      .catch(() => {
+        throw new Error("Cannot update user");
       });
 
     if (!user) return undefined;
@@ -89,8 +90,8 @@ export class UserService {
           pwd: pwd ? pwd : user.pwd
         }
       })
-      .catch((e) => {
-        throw e;
+      .catch(() => {
+        throw new Error("Cannot update user");
       });
 
     if (!result) return undefined;
@@ -105,8 +106,8 @@ export class UserService {
           id: id
         }
       })
-      .catch((e) => {
-        throw e;
+      .catch(() => {
+        throw new Error("Cannot delete user");
       });
 
     if (!res.name) return false;

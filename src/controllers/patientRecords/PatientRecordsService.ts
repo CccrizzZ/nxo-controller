@@ -5,11 +5,15 @@ export class PatientRecordsService {
   private readonly prisma: PrismaClient = new PrismaClient();
 
   async findRecordById(id: string): Promise<PatientRecord | undefined> {
-    const record = await this.prisma.patientRecord.findFirst({
-      where: {
-        id: id
-      }
-    });
+    const record = await this.prisma.patientRecord
+      .findFirst({
+        where: {
+          id: id
+        }
+      })
+      .catch(() => {
+        throw new Error("Cannot find record");
+      });
     return record || undefined;
   }
 
@@ -20,10 +24,23 @@ export class PatientRecordsService {
           ...record
         }
       })
-      .catch((e) => {
-        throw e;
+      .catch(() => {
+        throw new Error("Failed to create record");
       });
     return record.id;
+  }
+
+  async getAllRecordByOwner(id: string): Promise<PatientRecord[]> {
+    const arr = await this.prisma.patientRecord
+      .findMany({
+        where: {
+          usersId: id
+        }
+      })
+      .catch(() => {
+        throw new Error("Owner not found");
+      });
+    return arr;
   }
 
   async deleteRecordById(id: string | undefined): Promise<string | undefined> {
@@ -33,8 +50,8 @@ export class PatientRecordsService {
           id: id
         }
       })
-      .catch((e) => {
-        throw e;
+      .catch(() => {
+        throw new Error("Failed to delete record");
       });
 
     return id;
@@ -47,8 +64,8 @@ export class PatientRecordsService {
           id: id
         }
       })
-      .catch((e) => {
-        throw e;
+      .catch(() => {
+        throw new Error("Cannot get record owner");
       });
 
     if (!record) return undefined;
@@ -65,13 +82,13 @@ export class PatientRecordsService {
           name: newName
         }
       })
-      .catch((e) => {
-        throw e;
+      .catch(() => {
+        throw new Error("Failed to update name");
       });
     return newName;
   }
 
-  async updateRecordPriority(id: string, newPriority: priorityType): Promise<string> {
+  async updateRecordPriorityById(id: string, newPriority: priorityType): Promise<string> {
     await this.prisma.patientRecord
       .update({
         where: {
@@ -81,13 +98,13 @@ export class PatientRecordsService {
           priority: newPriority
         }
       })
-      .catch((e) => {
-        throw e;
+      .catch(() => {
+        throw new Error("Failed to update priority");
       });
     return String(newPriority);
   }
 
-  async updateStatusType(id: string, newStatus: statusType): Promise<string> {
+  async updateStatusTypeById(id: string, newStatus: statusType): Promise<string> {
     await this.prisma.patientRecord
       .update({
         where: {
@@ -97,22 +114,9 @@ export class PatientRecordsService {
           statusType: newStatus
         }
       })
-      .catch((e) => {
-        throw e;
+      .catch(() => {
+        throw new Error("Failed to update status");
       });
     return String(newStatus);
-  }
-
-  async getAllRecordByOwner(id: string): Promise<PatientRecord[]> {
-    const arr = await this.prisma.patientRecord
-      .findMany({
-        where: {
-          usersId: id
-        }
-      })
-      .catch((e) => {
-        throw e;
-      });
-    return arr;
   }
 }
