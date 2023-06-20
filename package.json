@@ -43,6 +43,7 @@
     "tsconfig-paths": "^4.2.0"
   },
   "devDependencies": {
+    "@microsoft/eslint-formatter-sarif": "^3.0.0",
     "@tsed/cli-plugin-eslint": "4.5.2",
     "@tsed/cli-plugin-jest": "4.5.2",
     "@types/cookie-parser": "^1.4.3",
