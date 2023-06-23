@@ -5,7 +5,7 @@ export type UserInfo = {
   email: string | undefined;
 };
 
-export class UserService {
+export class UsersService {
   private readonly prisma: PrismaClient = new PrismaClient();
 
   // only return user info

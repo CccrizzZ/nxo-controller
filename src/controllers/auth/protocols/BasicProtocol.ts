@@ -32,6 +32,6 @@ export class BasicProtocol implements OnVerify, OnInstall {
   }
 
   $onInstall(strategy: Strategy): void {
-    console.log(strategy);
+    console.log(strategy.name);
   }
 }

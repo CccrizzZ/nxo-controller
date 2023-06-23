@@ -1,4 +1,4 @@
-version: '3.5'
+version: "3.5"
 services:
   server:
     build:
@@ -12,3 +12,21 @@ services:
     ports:
       - "8081:8081"
 
+  prisma:
+    image: "prismagraphql/prisma: 1.8"
+    restart: always
+    ports:
+      - "4466:4466"
+    environment:
+      DATABASE_URL: "mongodb+srv://nxo_provider:XL8wpkJX7JuLc2Ja@cluster0.zbstje5.mongodb.net/nxoCare?retryWrites=true&w=majority"
+      PRISMA_CONFIG: |
+        managementApiSecret: 1223%%%
+        port: 4466
+        databases:
+          default:
+            connector: mongodb
+            migrations: true
+            host: mongodb+srv
+            port: nxoCare
+            user: nxo_provider
+            password: XL8wpkJX7JuLc2Ja

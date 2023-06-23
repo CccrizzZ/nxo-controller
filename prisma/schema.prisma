@@ -16,20 +16,23 @@ model Users {
 }
 
 model PatientRecord {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
   name       String
-  date       DateTime @default(now())
+  date       DateTime  @default(now())
   category   String // "patientRequests" | "providerRequests" | "recordsReceived" | "yourRequests" ;
   recordType String // 'patientProfile' | 'labResult' | 'doctorsNote'
   priority   String // 'emergency' | 'medium' | 'low'
   statusType String // 'pending' | 'complete' | 'rejected' 
-  patientId  String?  @db.ObjectId
-  usersId    String?  @db.ObjectId
-  Users      Users?   @relation(fields: [usersId], references: [id])
+  patientId  String?   @db.ObjectId
+  usersId    String?   @db.ObjectId
+  Users      Users?    @relation(fields: [usersId], references: [id])
+  Patient    Patients? @relation(fields: [patientId], references: [id])
 }
 
-enum Role {
-  USER
-  PATIENT
-  ADMIN
+model Patients {
+  id      String          @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  pwd     String
+  email   String
+  records PatientRecord[]
 }

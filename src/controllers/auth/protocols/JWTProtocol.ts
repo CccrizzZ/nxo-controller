@@ -2,7 +2,7 @@ import { Req } from "@tsed/common";
 import { Unauthorized } from "@tsed/exceptions";
 import { Arg, OnInstall, OnVerify, Protocol } from "@tsed/passport";
 import { ExtractJwt, Strategy, StrategyOptions } from "passport-jwt";
-import { UserService } from "src/controllers/users/UserService";
+import { UsersService } from "../../users/UsersService";
 import * as jwt from "jsonwebtoken";
 
 @Protocol<StrategyOptions>({
@@ -16,10 +16,10 @@ import * as jwt from "jsonwebtoken";
   }
 })
 export class JwtProtocol implements OnVerify, OnInstall {
-  constructor(private userSevice: UserService) {}
+  constructor(private usersSevice: UsersService) {}
 
   async $onVerify(@Req() req: Req, @Arg(0) jwtPayload: jwt.JwtPayload): Promise<string | undefined> {
-    const user = await this.userSevice.findUserById(String(jwtPayload.sub));
+    const user = await this.usersSevice.findUserById(String(jwtPayload.sub));
 
     if (!user || !user.name) {
       throw new Unauthorized("Wrong token");
@@ -29,6 +29,6 @@ export class JwtProtocol implements OnVerify, OnInstall {
   }
 
   $onInstall(strategy: Strategy): void {
-    console.log(strategy);
+    console.log(strategy.name);
   }
 }

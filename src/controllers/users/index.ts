@@ -3,4 +3,4 @@
  */
 
 export * from "./UsersController";
-export * from "./UserService";
+export * from "./UsersService";

@@ -6,6 +6,7 @@ import "@tsed/ajv";
 import "@tsed/swagger";
 import { config } from "./config/index";
 import * as users from "./controllers/users/index";
+import * as patients from "./controllers/patients/index";
 import * as auth from "./controllers/auth/index";
 import * as pages from "./controllers/pages/index";
 import * as pRecord from "./controllers/patientRecords/index";
@@ -32,7 +33,7 @@ import "./controllers/auth/protocols/JWTProtocol";
   httpsPort: false, // CHANGE
   disableComponentsScan: true,
   mount: {
-    "/rest": [...Object.values(auth), ...Object.values(users), ...Object.values(pRecord)],
+    "/rest": [...Object.values(auth), ...Object.values(users), ...Object.values(pRecord), ...Object.values(patients)],
     "/": [...Object.values(pages)]
   },
   swagger: [

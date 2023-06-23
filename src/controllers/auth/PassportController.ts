@@ -2,7 +2,7 @@ import { BodyParams, Post, Req, Get, Session } from "@tsed/common";
 import { Returns } from "@tsed/schema";
 import { Unauthorized } from "@tsed/exceptions";
 import { Controller } from "@tsed/di";
-import { UserService } from "../users/UserService";
+import { UsersService } from "../users/UsersService";
 import * as jwt from "jsonwebtoken";
 // import { Authorize } from "@tsed/passport";
 // import { PrismaClient } from "@prisma/client";
@@ -10,7 +10,7 @@ import * as jwt from "jsonwebtoken";
 
 @Controller("/auth")
 export class PassportController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly usersService: UsersService) {}
 
   @Get("/whoami")
   whoAmI(@Session() session: any) {
@@ -27,7 +27,7 @@ export class PassportController {
     console.log(req.headers);
     console.log(req.hostname);
 
-    const result = await this.userService.validateUser(uname, pwd);
+    const result = await this.usersService.validateUser(uname, pwd);
     console.log(result);
     if (result) {
       console.log(uname);
